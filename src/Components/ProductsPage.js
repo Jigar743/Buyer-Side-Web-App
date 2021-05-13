@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardImg,
@@ -11,27 +11,12 @@ import {
 } from "reactstrap";
 import groceryProduct from "../ProductsData/ProductData.json";
 import "../style/Component/ProductsPage.css";
-import { useDispatch } from "react-redux";
-import { ADD_TO_CART } from "../actions/auth";
 import { Link } from "react-router-dom";
+import useAddToCart from "../customHooks/useAddToCart";
 
 export default function ProductsPage() {
-  const [addToCartArr, setAddToCartArr] = useState([]);
-  const dispatch = useDispatch();
-  const handleAddtoCart = (index) => {
-    let addtocartData = [];
-    let data = groceryProduct[index];
-    delete data.pack_size;
-    data.quantity = 1;
-    addtocartData.push(...addToCartArr, data);
-    setAddToCartArr(addtocartData);
-    dispatch({
-      type: ADD_TO_CART,
-      addToCartProduct: addtocartData,
-    });
-  };
-  console.log(addToCartArr);
-
+  const [handleAddToCart] = useAddToCart();
+  
   return (
     <div className="productsList mainpages">
       <Row>
@@ -58,7 +43,7 @@ export default function ProductsPage() {
                   <CardText className="price">₹ {product.price}</CardText>
                   <button
                     className="addtocartbtn"
-                    onClick={() => handleAddtoCart(index)}
+                    onClick={() => handleAddToCart(index)}
                   >
                     Add To Cart
                   </button>
